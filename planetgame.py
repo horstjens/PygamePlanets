@@ -77,7 +77,7 @@ universe_screen = UniverseScreen(width, height)
 
 #-------------------Sun--------------------
 particle_mass = 240
-particle_size = calculateRadius(particle_mass) *2
+particle_size = calculateRadius(particle_mass)
 x = 300
 y = 300
 
@@ -143,7 +143,7 @@ while running:
                 key_to_function[event.key](universe_screen)
             if event.key == pygame.K_5:
                 ## create a new star with intitial random speed
-                particle_mass = 50
+                particle_mass = 0.001
                 particle_size = calculateRadius(particle_mass)
                 x = pygame.mouse.get_pos()[0]  #universe_screen.width 
                 y = pygame.mouse.get_pos()[1]  #* universe_screen.magnification
@@ -278,14 +278,28 @@ while running:
         y = int(universe_screen.my + (universe_screen.dy + p.y) * universe_screen.magnification)
         size = int(p.size * universe_screen.magnification)
 
-        
+        #if p.sun and random.random() < 0.01:
+        #     # protuberanz partikel wegscheißen
+        #     particle_mass = 0.0001
+        #     particle_size = calculateRadius(particle_mass)
+        #     #x = p.x + p.size #ygame.mouse.get_pos()[0]  #universe_screen.width 
+        #     #y = pygame.mouse.get_pos()[1]  #* universe_screen.magnification
+        #        
+        #     #   px = x / universe_screen.magnification  - universe_screen.mx / universe_screen.magnification - universe_screen.dx  
+        #     #   py = y / universe_screen.magnification  - universe_screen.my / universe_screen.magnification - universe_screen.dy  
+        #     px = p.x + p.size * (random.random()*4-2) 
+        #     py = p.y + p.size * (random.random()*4-2)   
+        #     universe.addParticles(mass=particle_mass, size=particle_size, speed=.2,
+        #                              colour=(random.randint(0,255),random.randint(0,255),255),
+        #                              x=px,y=py,angle=random.random()*2*math.pi)
                 
         if size < 2:
             pygame.draw.rect(screen, p.colour, (x, y, 2, 2))
         else:
             if p.sun:
                 p.colour = (255,255,random.randint(0,100))
-                print("PUND")
+                #print("PUND!!!11!")
+                
             pygame.draw.circle(screen, p.colour, (x, y), size, 0)
         
       

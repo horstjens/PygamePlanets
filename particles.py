@@ -79,7 +79,7 @@ class Particle:
         self.elasticity = 0.9
         self.history = []
         self.sun = sun
-        print ("sun",self.sun)
+        print ("sun")
 
     def move(self):
         """ Update position based on speed, angle """
@@ -122,8 +122,10 @@ class Particle:
 
         theta = math.atan2(dy, dx)
         force = 0.2 * self.mass * other.mass / dist**2
-        self.accelerate((theta- 0.5 * math.pi, force/self.mass))
-        other.accelerate((theta+ 0.5 * math.pi, force/other.mass))
+        if self.mass > 0:
+            self.accelerate((theta- 0.5 * math.pi, force/self.mass))
+        if other.mass > 0:
+            other.accelerate((theta+ 0.5 * math.pi, force/other.mass))
 
 class Environment:
     """ Defines the boundary of a simulation and its properties """

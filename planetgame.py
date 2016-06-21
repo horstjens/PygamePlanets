@@ -54,7 +54,7 @@ pygame.init()
 #zoomin = pygame.mixer.Sound(os.path.join('data','zoom1.wav'))  #load sound
 #zoomout = pygame.mixer.Sound(os.path.join('data','zoom2.wav'))  #load sound
 
-(width, height) = (600, 600)
+(width, height) = (1024, 600)
 screen = pygame.display.set_mode((width, height))
 
 
@@ -244,6 +244,21 @@ while running:
         universe.update()
         
     screen.fill(universe.colour)
+    
+    for p in universe.particles:
+        # draw green habitable zone ring around sun
+        if p.sun:
+            x = int(universe_screen.mx + (universe_screen.dx + p.x) * universe_screen.magnification)
+            y = int(universe_screen.my + (universe_screen.dy + p.y) * universe_screen.magnification)
+            size = int(p.size * universe_screen.magnification)
+            #print(size)
+            # inner ring
+            pygame.draw.circle(screen, (0,200,0), (x, y), int(max(100*p.size * universe_screen.magnification,1)), 1)
+            # outer ring
+            pygame.draw.circle(screen, (0,200,0), (x, y), int(max(200*p.size * universe_screen.magnification,1)),  1)
+            
+            
+    
     # ---- paint trail of destroyed stars ----
     for minilist in universe.history:
             color = len(minilist)

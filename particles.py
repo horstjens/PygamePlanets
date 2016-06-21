@@ -25,12 +25,16 @@ def addVectors(xxx_todo_changeme4, xxx_todo_changeme5):
 
 def combine(p1, p2):
     if math.hypot(p1.x - p2.x, p1.y - p2.y) < p1.size + p2.size:
+        
         total_mass = p1.mass + p2.mass
         p1.x = (p1.x*p1.mass + p2.x*p2.mass)/total_mass
         p1.y = (p1.y*p1.mass + p2.y*p2.mass)/total_mass
         (p1.angle, p1.speed) = addVectors((p1.angle, p1.speed*p1.mass/total_mass), (p2.angle, p2.speed*p2.mass/total_mass))
         p1.speed *= (p1.elasticity*p2.elasticity)
-        p1.mass += p2.mass
+        if p1.sun and not p2.sun:
+            pass#sun doesnt grow by getting fed with planets, only does with other suns.
+        else:
+            p1.mass += p2.mass
         p1.collide_with = p2
 
 def collide(p1, p2):
@@ -60,7 +64,7 @@ def collide(p1, p2):
 class Particle:
     """ A circular object with a velocity, size and mass """
     
-    def __init__(self, xxx_todo_changeme, size, mass=1):
+    def __init__(self, xxx_todo_changeme, size, mass=1, sun=False):
         (x, y) = xxx_todo_changeme
 
         self.x = x
@@ -74,6 +78,8 @@ class Particle:
         self.drag = 1
         self.elasticity = 0.9
         self.history = []
+        self.sun = sun
+        print ("sun",self.sun)
 
     def move(self):
         """ Update position based on speed, angle """
@@ -162,14 +168,17 @@ class Environment:
         
         for i in range(n):
             size = kargs.get('size', random.randint(10, 20))
+            sun = kargs.get("sun", False)
             mass = kargs.get('mass', random.randint(100, 10000))
             x = kargs.get('x', random.uniform(size, self.width-size))
             y = kargs.get('y', random.uniform(size, self.width-size))
             #print("automatic xy: ", x, y)
-            particle = Particle((x, y), size, mass)
+            particle = Particle((x, y), size, mass, sun)
             particle.speed = kargs.get('speed', random.random())
             particle.angle = kargs.get('angle', random.uniform(0, math.pi*2))
             particle.colour = kargs.get('colour', (0, 0, 255))
+            if sun:
+                particle.colour = (255,255,0)
             particle.drag = (particle.mass/(particle.mass + self.mass_of_air)) ** particle.size
 
             self.particles.append(particle)

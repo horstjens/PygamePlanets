@@ -65,8 +65,8 @@ universe.addFunctions(['move', 'attract', 'combine'])
 universe_screen = UniverseScreen(width, height)
 
 #sonne
-universe.addParticles(mass=150, size=calculateRadius(150), speed=0, x=300, y=300,
-                          colour=(240,225,0))
+#universe.addParticles(mass=150, size=calculateRadius(150), speed=0, x=300, y=300,
+#                          colour=(240,225,0))
 #for p in range(5):
 #    particle_mass = random.randint(10,25)
 #    particle_size = calculateRadius(particle_mass)
@@ -76,8 +76,8 @@ universe.addParticles(mass=150, size=calculateRadius(150), speed=0, x=300, y=300
 #                                  random.randint(128,255)))
 
 #-------------------Sun--------------------
-particle_mass = 90
-particle_size = calculateRadius(particle_mass)
+particle_mass = 240
+particle_size = calculateRadius(particle_mass) *2
 x = 300
 y = 300
 
@@ -85,8 +85,8 @@ px = x / universe_screen.magnification  - universe_screen.mx / universe_screen.m
 py = y / universe_screen.magnification  - universe_screen.my / universe_screen.magnification - universe_screen.dy  
 
 universe.addParticles(mass=particle_mass, size=particle_size, speed=0,
-					  colour=(255,255,0),
-					  x=px,y=py,angle=0)
+                      colour=(255,255,0),
+                      x=px,y=py,angle=0, sun=True)
 
 #------------------------Mercury-----------------
 particle_mass = 10
@@ -100,9 +100,9 @@ px = x / universe_screen.magnification  - universe_screen.mx / universe_screen.m
 py = y / universe_screen.magnification  - universe_screen.my / universe_screen.magnification - universe_screen.dy  
 
 universe.addParticles(mass=particle_mass, size=particle_size, speed=1,
-					  colour=(random.randint(0,255),random.randint(0,255),255),
-					  x=px,y=py,angle=angle)
-#--------------------venus--------------					  
+                      colour=(random.randint(0,255),random.randint(0,255),255),
+                      x=px,y=py,angle=angle)
+#--------------------venus--------------                      
 particle_mass = 10
 particle_size = calculateRadius(particle_mass)
 x = 400 
@@ -114,8 +114,8 @@ px = x / universe_screen.magnification  - universe_screen.mx / universe_screen.m
 py = y / universe_screen.magnification  - universe_screen.my / universe_screen.magnification - universe_screen.dy  
 
 universe.addParticles(mass=particle_mass, size=particle_size, speed=0.3,
-					  colour=(random.randint(0,255),random.randint(0,255),255),
-					  x=px,y=py,angle=angle)
+                      colour=(random.randint(0,255),random.randint(0,255),255),
+                      x=px,y=py,angle=angle)
 
 key_to_function = {
     pygame.K_LEFT:   (lambda x: x.scroll(dx = 1)),
@@ -283,6 +283,9 @@ while running:
         if size < 2:
             pygame.draw.rect(screen, p.colour, (x, y, 2, 2))
         else:
+            if p.sun:
+                p.colour = (255,255,random.randint(0,100))
+                print("PUND")
             pygame.draw.circle(screen, p.colour, (x, y), size, 0)
         
       
